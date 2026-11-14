@@ -15,9 +15,23 @@ menuButton.addEventListener('click', () => {
 });
 
 menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') closeMenu();
+const filterButtons = [...document.querySelectorAll('.filter-button')];
+const brandCards = [...document.querySelectorAll('.brand-card')];
+
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const filter = button.dataset.filter;
+    filterButtons.forEach((item) => {
+      const active = item === button;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-pressed', String(active));
+    });
+    brandCards.forEach((card) => {
+      card.hidden = !(filter === 'all' || card.dataset.category === filter);
+    });
+  });
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();
